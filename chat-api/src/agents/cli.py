@@ -79,7 +79,7 @@ def chat(
             # 에이전트 응답 생성
             with console.status("[bold green]생각 중...[/bold green]"):
                 try:
-                    response = asyncio.run(agent.invoke(user_input, chat_history[:-1]))
+                    response = asyncio.run(agent.invoke_legacy(user_input, chat_history[:-1]))
                     
                     # 응답 출력
                     console.print("\n[bold green]Assistant[/bold green]")

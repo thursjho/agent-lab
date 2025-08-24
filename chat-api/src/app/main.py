@@ -1,15 +1,16 @@
 from litestar import Litestar, get
 from typing import Dict
 
+from .controllers.chat_controller import ChatController
+from .dependencies import dependencies
+
 
 @get("/")
 async def health_check() -> Dict[str, str]:
     return {"status": "healthy", "service": "chat-api"}
 
 
-@get("/api/health")
-async def api_health() -> Dict[str, str]:
-    return {"status": "ok", "version": "1.0.0"}
-
-
-app = Litestar(route_handlers=[health_check, api_health])
+app = Litestar(
+    route_handlers=[health_check, ChatController],
+    dependencies=dependencies
+)

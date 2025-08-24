@@ -3,13 +3,14 @@
 LangGraph를 사용한 간단한 대화형 에이전트 구현
 """
 
-import os
 from typing import Dict, Any, List
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
+
+from ..settings import get_settings
 
 
 class AgentState(TypedDict):
@@ -20,15 +21,17 @@ class AgentState(TypedDict):
 class DefaultAgent:
     """기본 채팅 에이전트"""
     
-    def __init__(self, model_name: str = "gpt-4o-mini"):
+    def __init__(self, model_name: str = None):
         """
         Args:
-            model_name: 사용할 OpenAI 모델명
+            model_name: 사용할 OpenAI 모델명 (None이면 설정값 사용)
         """
+        settings = get_settings()
         self.llm = ChatOpenAI(
-            model=model_name,
-            temperature=0.7,
-            api_key=os.getenv("OPENAI_API_KEY")
+            model=model_name or settings.openai_model,
+            temperature=settings.openai_temperature,
+            api_key=settings.openai_api_key,
+            max_tokens=settings.openai_max_tokens
         )
         self.graph = self._build_graph()
     

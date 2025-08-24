@@ -4,9 +4,14 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
+    "langchain-core>=0.3.74",
+    "langchain-openai>=0.3.31",
+    "langgraph>=0.6.6",
     "litestar>=2.17.0",
     "openai>=1.101.0",
     "pydantic>=2.11.7",
+    "rich>=14.1.0",
+    "typer>=0.16.1",
     "uvicorn>=0.35.0",
 ]
 
@@ -20,6 +25,8 @@ dev = [
 
 [tool.poe.tasks]
 dev = "uvicorn src.app.main:app --reload --reload-dir src --host 0.0.0.0 --port 8000"
+chat = "python -m src.agents.cli chat"
+chat-info = "python -m src.agents.cli info"
 test = "pytest tests/"
 lint = "ruff check ."
 format = "ruff format ."
